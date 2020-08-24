@@ -42,6 +42,13 @@ Json::Value sendRequest(string auth_token, string fileName) {
 	field = curl_mime_addpart(form);
 	curl_mime_name(field, "upload");
 	curl_mime_filedata(field, fileName.c_str());
+
+	curl_mimepart *part = NULL;
+	part = curl_mime_addpart(form);
+	curl_mime_name(part, "config");
+	curl_mime_data(part, "{\"mode\":\"redaction\"}", CURL_ZERO_TERMINATED);
+
+
 	curl_easy_setopt(hnd, CURLOPT_MIMEPOST, form);
 
 	struct curl_slist *headers = NULL;
