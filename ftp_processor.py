@@ -176,6 +176,10 @@ def retrieve_files(ftp):
 
     ftp.retrlines('LIST', lambda x: file_list.append(x.split(maxsplit=8)))
 
+    print("File List")
+    print(file_list)
+    print("End File List")
+
     for info in file_list:
         ls_type, name = info[0], info[-1]
         if ls_type.startswith('d'):
