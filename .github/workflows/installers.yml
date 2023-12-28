@@ -67,20 +67,23 @@ jobs:
         with:
           name: Windows-Installer-unsigned
           path: dist
-      - name: Run tests and capture log output
+      - name: Test installer Startup
         id: test-executable
         run: |
-          # Run your executable and capture the output. Time limit 10 seconds
-          $output = timeout /t 10 /nobreak .\dist\Windows-Installer-unsigned.exe | Out-String
-          Write-Output "TestOutput::$output"
-      - name: Check log output for specific string
-        run: |
-          # Check if the log output contains a specific string
-          $specificString = "YourSpecificString"
-          if ($env:TestOutput -contains $specificString) {
-            Write-Output "Test Passed: Log output contains '$specificString'"
+          # Run your executable in the background
+          Start-Process -FilePath .\dist\Windows-Installer-unsigned.exe -NoNewWindow
+
+          # Wait for the executable to start (adjust the sleep duration if needed)
+          Start-Sleep -Seconds 5
+
+          # Make a curl-like request to localhost:8050
+          $response = Invoke-RestMethod -Uri http://localhost:8050
+
+          # Check if the status code is 200
+          if ($response.StatusCode -eq 200) {
+            Write-Output "Test Passed: Status code is 200"
           } else {
-            Write-Error "Test Failed: Log output does not contain '$specificString'"
+            Write-Error "Test Failed: Unexpected status code $($response.StatusCode)"
             exit 1
           }
 
