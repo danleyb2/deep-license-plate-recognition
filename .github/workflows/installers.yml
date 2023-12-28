@@ -71,7 +71,7 @@ jobs:
         id: test-executable
         run: |
           # Run your executable in the background
-          Start-Process -FilePath .\dist\Windows-Installer-unsigned.exe -NoNewWindow
+          Start-Process -FilePath .\dist\Windows-Installer-unsigned -NoNewWindow
 
           # Wait for the executable to start (adjust the sleep duration if needed)
           Start-Sleep -Seconds 5
