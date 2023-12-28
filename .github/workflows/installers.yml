@@ -3,10 +3,10 @@ name: Build Installers
 on:
   push:
     branches:
-      - master
+      - test-windows-installer
     # Run Action only when /docker is pushed to
-    paths:
-      - 'docker/**'
+#    paths:
+#      - 'docker/**'
   workflow_dispatch:
 
 jobs:
@@ -56,6 +56,33 @@ jobs:
   #       with:
   #         name: PlateRecognizer-Installer-Windows
   #         path: dist
+
+  test-windows-installer:
+    runs-on: windows-latest
+    needs: windows-installer
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Windows-Installer-unsigned
+          path: dist
+      - name: Run tests and capture log output
+        id: test-executable
+        run: |
+          # Run your executable and capture the output. Time limit 10 seconds
+          $output = timeout /t 10 /nobreak .\dist\Windows-Installer-unsigned.exe | Out-String
+          Write-Output "TestOutput::$output"
+      - name: Check log output for specific string
+        run: |
+          # Check if the log output contains a specific string
+          $specificString = "YourSpecificString"
+          if ($env:TestOutput -contains $specificString) {
+            Write-Output "Test Passed: Log output contains '$specificString'"
+          } else {
+            Write-Error "Test Failed: Log output does not contain '$specificString'"
+            exit 1
+          }
 
   mac-installer:
     runs-on: macos-latest
