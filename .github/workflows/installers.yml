@@ -68,7 +68,7 @@ jobs:
           name: Windows-Installer-unsigned
           path: dist
       - run: |
-          tree /F dist
+          tree /F D:\a\deep-license-plate-recognition\deep-license-plate-recognition\dist
           
       - name: Test installer Startup
         id: test-executable
