@@ -68,7 +68,7 @@ jobs:
           name: Windows-Installer-unsigned
           path: dist
       - run: |
-          tree /F Windows-Installer-unsigned
+          tree /F dist
           
       - name: Test installer Startup
         id: test-executable
