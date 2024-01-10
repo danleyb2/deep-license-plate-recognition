@@ -74,7 +74,7 @@ jobs:
         id: test-executable
         run: |
           # Run your executable in the background
-          Start-Process -FilePath .\deep-license-plate-recognition\dist\Windows-Installer-unsigned -NoNewWindow
+          Start-Process -FilePath D:\a\deep-license-plate-recognition\deep-license-plate-recognition\dist\Windows-Installer-unsigned -NoNewWindow
 
           # Wait for the executable to start (adjust the sleep duration if needed)
           Start-Sleep -Seconds 5
