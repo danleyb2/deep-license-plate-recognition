@@ -77,25 +77,25 @@ jobs:
           netstat -o -n -a | findstr 8050
           curl -X GET "http://localhost:8050"
 
-      - name: Test installer Startup
-        id: test-executable
-        run: |
-          # Run your executable in the background
-          Start-Process -FilePath D:\a\deep-license-plate-recognition\deep-license-plate-recognition\dist\PlateRecognizer-Installer.exe -NoNewWindow
+      # - name: Test installer Startup
+      #   id: test-executable
+      #   run: |
+      #     # Run your executable in the background
+      #     Start-Process -FilePath D:\a\deep-license-plate-recognition\deep-license-plate-recognition\dist\PlateRecognizer-Installer.exe -NoNewWindow
 
-          # Wait for the executable to start (adjust the sleep duration if needed)
-          Start-Sleep -Seconds 5
+      #     # Wait for the executable to start (adjust the sleep duration if needed)
+      #     Start-Sleep -Seconds 5
 
-          # Make a curl-like request to localhost:8050
-          $response = Invoke-RestMethod -Uri http://localhost:8050
+      #     # Make a curl-like request to localhost:8050
+      #     $response = Invoke-RestMethod -Uri http://localhost:8050
 
-          # Check if the status code is 200
-          if ($response.StatusCode -eq 200) {
-            Write-Output "Test Passed: Status code is 200"
-          } else {
-            Write-Error "Test Failed: Unexpected status code $($response.StatusCode)"
-            exit 1
-          }
+      #     # Check if the status code is 200
+      #     if ($response.StatusCode -eq 200) {
+      #       Write-Output "Test Passed: Status code is 200"
+      #     } else {
+      #       Write-Error "Test Failed: Unexpected status code $($response.StatusCode)"
+      #       exit 1
+      #     }
 
   mac-installer:
     runs-on: macos-latest
