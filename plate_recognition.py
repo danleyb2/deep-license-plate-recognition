@@ -79,7 +79,7 @@ def recognition_api(
     if timestamp:
         data["timestamp"] = timestamp
     response = None
-    if sdk_url:
+    if sdk_urla:
         fp.seek(0)
         if "container-api" in sdk_url:
             response = requests.post(
