@@ -14,6 +14,7 @@ from pathlib import Path
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
+CODE_REVIEW_GPT_EDIT sss22
 
 def parse_arguments(args_hook=lambda _: _):
     parser = argparse.ArgumentParser(
