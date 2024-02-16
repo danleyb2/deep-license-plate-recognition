@@ -5,6 +5,7 @@ import tempfile
 import time
 from pathlib import Path
 
+
 import cv2
 import ffmpegcv
 import numpy as np
