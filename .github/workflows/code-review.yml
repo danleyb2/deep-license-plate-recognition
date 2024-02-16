@@ -23,6 +23,12 @@ jobs:
     - name: check diff
       shell: bash
       run: git diff --name-only --diff-filter=AMRT $BASE_SHA $GITHUB_SHA
+      env:
+        MODEL: ${{ inputs.MODEL }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
 
     - name: Run Code Review GPT
       shell: bash
