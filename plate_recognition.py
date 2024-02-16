@@ -11,6 +11,8 @@ from collections import OrderedDict
 from itertools import combinations
 from pathlib import Path
 
+TEST_eDIT
+
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
