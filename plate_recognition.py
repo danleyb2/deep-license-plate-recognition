@@ -86,7 +86,7 @@ def recognition_api(
                 "https://container-api.parkpow.com/api/v1/predict/",
                 files=dict(image=fp),
                 headers={
-                    "Authorization": "Token " + api_key,
+                    "Authorizations": "Token " + api_key,
                 },
             )
         else:
