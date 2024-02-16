@@ -10,22 +10,31 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      BASE_SHA: '99a5fd8edf80a53dfcfebbcb9082334bc1527641'
-      GITHUB_SHA: ${{ github.sha }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    # env:
+    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   GITHUB_SHA: ${{ github.sha }}
+    #   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
     - uses: actions/checkout@v3
       # with:
       #   fetch-depth: 0
 
-    - name: Code Review GPT
-      uses: mattzcarey/code-review-gpt
-      with:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          MODEL: 'gpt-3.5-turbo'
-          GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Run Code Review GPT
+      shell: bash
+      run: npx code-review-gpt review --ci=github --model=$MODEL
+      
+      env:
+        MODEL: ${{ inputs.MODEL }}
+        OPENAI_API_KEY: ${{ inputs.OPENAI_API_KEY }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+
+    # - name: Code Review GPT
+    #   uses: mattzcarey/code-review-gpt
+    #   with:
+    #       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    #       MODEL: 'gpt-3.5-turbo'
+    #       GITHUB_TOKEN: ${{ github.token }}
           
