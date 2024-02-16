@@ -27,10 +27,10 @@ jobs:
 
     - name: Run Code Review GPT
       shell: bash
-      run: >
+      run: |
         export GITHUB_SHA=${{ github.event.pull_request.head.sha }}
         export BASE_SHA=${{ github.event.pull_request.base.sha }}
-        npx code-review-gpt review --ci=github --model=$MODEL --debug
+        npx code-review-gpt review --ci=github --model='gpt-3.5-turbo-16k' --debug
       
       env:
         MODEL: ${{ inputs.MODEL }}
