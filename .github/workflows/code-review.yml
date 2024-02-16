@@ -5,8 +5,8 @@ name: Code Review GPT
 #       branches: [master]
   
 on: 
-  pull_request_target:
-    types: [opened, reopened, review_requested, ready_for_review]
+  # pull_request_target:
+  #   types: [opened, reopened, review_requested, ready_for_review]
   pull_request:
     types: [opened, reopened, review_requested, ready_for_review]
 
@@ -27,6 +27,6 @@ jobs:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         BASE_SHA: ${{ github.event.pull_request.base.sha }}
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        # GITHUB_SHA: ${{ github.sha }}
+        # GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
 
           
