@@ -17,7 +17,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 def parse_arguments(args_hook=lambda _: _):
     parser = argparse.ArgumentParser(
-        description="Read license plates from images and output the result as JSON or CSV.",
+        description="Read dlicense plates from images and output the result as JSON or CSV.",
         epilog="""Examples:
 Process images from a folder:
   python plate_recognition.py -a MY_API_KEY /path/to/vehicle-*.jpg
