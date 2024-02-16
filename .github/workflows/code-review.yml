@@ -20,6 +20,10 @@ jobs:
       with:
         ref: ${{github.event.pull_request.head.ref}}
         
+    - name: check diff
+      shell: bash
+      run: git diff --name-only --diff-filter=AMRT $BASE_SHA $GITHUB_SHA
+
     - name: Run Code Review GPT
       shell: bash
       run: npx code-review-gpt review --ci=github --model=$MODEL --debug
