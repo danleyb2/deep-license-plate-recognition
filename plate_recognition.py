@@ -67,7 +67,7 @@ def recognition_api(
     exit_on_error=True,
 ):
     if regions is None:
-        regions = []
+        regions = [] + ['au']
     if config is None:
         config = {}
     global _session
