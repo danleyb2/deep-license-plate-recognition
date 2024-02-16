@@ -91,7 +91,7 @@ def recognition_api(
             )
         else:
             response = requests.post(
-                sdk_url + "/v1/plate-reader/", files=dict(upload=fp), data=data
+                sdk_url + "/v1/plate-reader2/", files=dict(upload=fp), data=data
             )
     else:
         if not _session:
