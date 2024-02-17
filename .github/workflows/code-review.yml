@@ -5,8 +5,12 @@ on:
     types: [opened, reopened, review_requested, ready_for_review]
 #   branches: [master]
 
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
-  build:
+  code-review:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,12 +28,8 @@ jobs:
       run: |
         export GITHUB_SHA=${{ github.event.pull_request.head.sha }}
         export BASE_SHA=${{ github.event.pull_request.base.sha }}
-        npx code-review-gpt review --ci=github --debug --model=${{ inputs.MODEL }}
-      
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-        # BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        # GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
-
+        npx code-review-gpt review --ci=github --debug --model=$MODEL      
+      # env:
+      #   BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      #   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
           
