@@ -28,7 +28,7 @@ jobs:
       run: |
         export GITHUB_SHA=${{ github.event.pull_request.head.sha }}
         export BASE_SHA=${{ github.event.pull_request.base.sha }}
-        npx code-review-gpt review --ci=github --debug --model=$MODEL      
+        npx code-review-gpt review --ci=github --debug --model=gpt-3.5-turbo-16k     
       # env:
       #   BASE_SHA: ${{ github.event.pull_request.base.sha }}
       #   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
