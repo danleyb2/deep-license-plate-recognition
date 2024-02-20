@@ -1,8 +1,8 @@
 name: Code Review GPT
-  
+
 on:
   pull_request:
-    types: [opened, reopened, review_requested, ready_for_review]
+    types: [opened, reopened, review_requested, ready_for_review, synchronize]
 #   branches: [master]
 
 env:
@@ -10,26 +10,50 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  code-review:
+#  code-review:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v4
+#      with:
+#        ref: ${{github.event.pull_request.head.ref}}
+#        fetch-depth: 0
+#
+#    - name: check diff
+#      shell: bash
+#      run: git diff --name-only --diff-filter=AMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+#
+#    - name: Run Code Review GPT
+#      shell: bash
+#      run: |
+#        export GITHUB_SHA=${{ github.event.pull_request.head.sha }}
+#        export BASE_SHA=${{ github.event.pull_request.base.sha }}
+#        npx code-review-gpt review --ci=github --debug --model=gpt-4
+#      # env:
+#      #   BASE_SHA: ${{ github.event.pull_request.base.sha }}
+#      #   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
+
+  code-review2:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        ref: ${{github.event.pull_request.head.ref}}
-        fetch-depth: 0
+        python-version: '3.10'
 
-    - name: check diff
-      shell: bash
-      run: git diff --name-only --diff-filter=AMRT ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-
-    - name: Run Code Review GPT
-      shell: bash
+    - name: Install dependencies
       run: |
-        export GITHUB_SHA=${{ github.event.pull_request.head.sha }}
-        export BASE_SHA=${{ github.event.pull_request.base.sha }}
-        npx code-review-gpt review --ci=github --debug --model=gpt-4
-      # env:
-      #   BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      #   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
-          
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Run GPT Review Script
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        PULL_REQUEST_ID: ${{ github.event.number }}
+      run: |
+        python .github/scripts/openai.py
