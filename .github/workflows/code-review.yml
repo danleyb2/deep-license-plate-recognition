@@ -1,36 +1,28 @@
-name: Code Review GPT
+name: Code Review
+
+permissions:
+  contents: read
+  pull-requests: write
 
 on:
   pull_request:
-    types: [opened, reopened, review_requested, ready_for_review, synchronize]
-#   branches: [master]
-
-env:
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    types: [opened, reopened, synchronize]
 
 jobs:
-  code-review:
+  code-review3:
+    # if: ${{ contains(github.event.*.labels.*.name, 'gpt review') }} # Optional; to run only when a label is attached
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests
-
-    - name: Run GPT Review Script
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-        PULL_REQUEST_ID: ${{ github.event.number }}
-      run: |
-        python .github/scripts/code_review_ai.py
+      - uses: anc95/ChatGPT-CodeReview@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Optional
+          # LANGUAGE: Chinese
+          OPENAI_API_ENDPOINT: https://api.openai.com/v1
+          MODEL: gpt-4 # https://platform.openai.com/docs/models
+          PROMPT: # example: Please check if there are any confusions or irregularities in the following code diff:
+          top_p: 1 # https://platform.openai.com/docs/api-reference/chat/create#chat/create-top_p
+          temperature: 1 # https://platform.openai.com/docs/api-reference/chat/create#chat/create-temperature
+          max_tokens: 10000
+          MAX_PATCH_LENGTH: 10000 # if the patch/diff length is large than MAX_PATCH_LENGTH, will be ignored and won't review. By default, with no MAX_PATCH_LENGTH set, there is also no limit for the patch/diff length.
